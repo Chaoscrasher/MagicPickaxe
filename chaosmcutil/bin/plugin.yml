@@ -1,0 +1,13 @@
+name: ChaosMCUtil
+version: 1.0
+description: A util plugin for Chaoscrasher
+author: Chaoscrasher
+main: com.chaoscrasher.main.ChaosMCUtilPlugin
+
+commands:
+  tpall:
+    description: tps yourself
+    usage: /tpall [Player] x y z [world]
+  diag:
+    description: Allows for server diagnostics
+    usage: /diag [diag] ...

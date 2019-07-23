@@ -1,0 +1,39 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceSets.main.java.srcDirs = ['src']
+sourceSets.test.java.srcDirs = ['test']
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'src'
+            include '*.yml'
+        }
+    }
+}
+
+jar
+{
+    from
+	{
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+   		url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots"
+	}
+	maven {
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+    flatDir {
+       dirs 'libs'
+    }
+}
+
+dependencies {
+    compileOnly "org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT"
+}
