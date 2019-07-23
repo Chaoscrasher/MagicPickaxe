@@ -1,0 +1,10 @@
+name: TeachingExample
+version: 1.0
+description:
+author: [AUTHOR]
+main: [BASE_PACKAGE].TeachingExamplePlugin
+
+commands:
+  tcom:
+    description: Allows you to read the type of a block anywhere in the world!
+    usage: use /tcom x y z w to call the test command
