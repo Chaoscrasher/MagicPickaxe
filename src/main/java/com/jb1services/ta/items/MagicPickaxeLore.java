@@ -1,13 +1,14 @@
 package com.jb1services.ta.items;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 public class MagicPickaxeLore
 {
+	public static boolean debug1 = false;
+
 	private boolean breaksDirt;
 	private boolean breaksWood;
 	private boolean breaksSand;
@@ -47,7 +48,7 @@ public class MagicPickaxeLore
 			String lb = lore.get(1);
 			this.xBreak = Integer.valueOf(lb.substring(lb.indexOf("x=")+2, lb.indexOf(" y")));
 			this.yBreak = Integer.valueOf(lb.substring(lb.indexOf("y=")+2, lb.indexOf(" z")));
-			this.xBreak = Integer.valueOf(lb.substring(lb.indexOf("z=")+2));
+			this.zBreak = Integer.valueOf(lb.substring(lb.indexOf("z=")+2));
 		}
 		else
 			throw new IllegalArgumentException("Lore has to be != null and of size 2!");
@@ -108,9 +109,9 @@ public class MagicPickaxeLore
 		this.breaksStone = Math.random() > 0.5;
 		this.breaksSand = Math.random() > 0.5;
 
-		this.xBreak = rnd.nextInt(10) * (rnd.nextBoolean() ? -1 : 1);
-		this.yBreak = rnd.nextInt(10) * (rnd.nextBoolean() ? -1 : 1);
-		this.zBreak = rnd.nextInt(10) * (rnd.nextBoolean() ? -1 : 1);
+		this.xBreak = rnd.nextInt(100) * (rnd.nextBoolean() ? -1 : 1);
+		this.yBreak = rnd.nextInt(100) * (rnd.nextBoolean() ? -1 : 1);
+		this.zBreak = rnd.nextInt(100) * (rnd.nextBoolean() ? -1 : 1);
 	}
 
 	public MagicPickaxeLore(boolean breaksStone, boolean breaksWood, boolean breaksDirt, boolean breaksSand, int xBreak,
@@ -130,12 +131,16 @@ public class MagicPickaxeLore
 	{
 		if (breaksDirt || breaksWood || breaksSand || breaksStone)
 		{
+			List<String> list = new ArrayList<>();
 			String lorea = "breaks: [" + (breaksDirt ? "dirt, " : "") +
 										 (breaksWood ? "wood, " : "") +
 										 (breaksSand ? "sand, " : "") +
 										 (breaksStone ? "stone" : "") + "]";
 			String loreb = "x=" + xBreak + " y=" + yBreak + " z=" + zBreak;
-			return Arrays.asList(lorea, loreb);
+			list.add(lorea);
+			list.add(loreb);
+			if (debug1) System.out.println("Returning correct lore!: " + list);
+			return list;
 		}
 		return new ArrayList<>();
 	}

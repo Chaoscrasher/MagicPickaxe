@@ -1,0 +1,16 @@
+name: TeachingExample
+version: 1.0
+description: abc
+author: Chaoscrasher
+main: com.jb1services.ta.main.TeachingExamplePlugin
+api-version: 1.13
+
+commands:
+  cmd:
+    description: Allows you to various cool things!
+    usage: /tbc [subcommand] [subargs]
+    drop:
+        description: Allows you to spawn things?
+        usage: /tbc drop [what_spawn]
+    clear-inv:
+        description: Allows you to clear your inventory!

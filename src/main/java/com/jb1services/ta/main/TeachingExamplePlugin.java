@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.jb1services.ta.commands.TestCommand;
+import com.jb1services.ta.events.MagicPickaxeBreakEvent;
 import com.jb1services.ta.events.TestEvents;
 
 public class TeachingExamplePlugin extends JavaPlugin {
@@ -15,8 +16,9 @@ public class TeachingExamplePlugin extends JavaPlugin {
 	{
 		instance = this;
 		System.out.println("TeachingExample loaded!");
-		Bukkit.getPluginCommand("tbc").setExecutor(new TestCommand());
+		Bukkit.getPluginCommand("cmd").setExecutor(new TestCommand());
 		Bukkit.getPluginManager().registerEvents(new TestEvents(), this);
+		Bukkit.getPluginManager().registerEvents(new MagicPickaxeBreakEvent(), this);
 		this.saveConfig();
 	}
 
