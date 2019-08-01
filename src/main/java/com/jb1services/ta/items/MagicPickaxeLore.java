@@ -9,11 +9,6 @@ public class MagicPickaxeLore
 {
 	public static boolean debug1 = false;
 
-	private boolean breaksDirt;
-	private boolean breaksWood;
-	private boolean breaksSand;
-	private boolean breaksStone;
-
 	private Integer xBreak;
 	private Integer yBreak;
 	private Integer zBreak;
