@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,10 +18,12 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.jb1services.ta.items.MagicPickaxeLore;
+import com.jb1services.ta.items.MagicPickaxe;
+import com.jb1services.ta.items.mpa.SpecialMagicPickaxe;
 import com.jb1services.ta.main.TeachingExamplePlugin;
 
 public class MagicPickaxeBreakEvent implements Listener {
+
 
 	public static boolean debug1 = true;
 	public static boolean debug2 = false;
@@ -35,18 +38,19 @@ public class MagicPickaxeBreakEvent implements Listener {
 		{
 			List<String> lore = im.getLore();
 			if (debug2) p.sendMessage("lore: " + lore);
-			Optional<MagicPickaxeLore> mplo = MagicPickaxeLore.isValidMagicPickaxeLore(lore);
-			if (mplo.isPresent())
+			Optional<SpecialMagicPickaxe> smplo = SpecialMagicPickaxe.isValidSpecialMagicPickaxeLore(lore);
+			Optional<MagicPickaxe> mplo = MagicPickaxe.isValidMagicPickaxeLore(lore);
+			MagicPickaxe mpl = smplo.isPresent() ? smplo.get() : mplo.isPresent() ? mplo.get() : null;
+			if (mpl != null)
 			{
+				if (debug1) p.sendMessage("special magic pickaxe: " + (mpl instanceof SpecialMagicPickaxe));
 				Runnable r = () ->
 				{
-					MagicPickaxeLore mpl = mplo.get();
 					int xs = block.getX() + 0, ys = block.getY(), zs = block.getZ();
 					if (debug2) p.sendMessage("Detected your magic pickaxe block break! Read lore: " + mpl.toLore() + "");
 					List<ItemStack> items = new ArrayList<>();
+					List<Material> notBroken = new ArrayList<>();
 					int blocks = 0;
-
-
 					for (int x = xs; x != xs + mpl.getxBreak(); x+=(mpl.getxBreak() >= 0 ? 1 : -1))
 					{
 						for (int y = ys; y != ys + mpl.getyBreak(); y+=(mpl.getyBreak() >= 0 ? 1 : -1))
@@ -54,23 +58,22 @@ public class MagicPickaxeBreakEvent implements Listener {
 							for (int z = zs; z != zs + mpl.getzBreak(); z+=(mpl.getzBreak() >= 0 ? 1 : -1))
 							{
 								Location loc = new Location(block.getWorld(), x, y, z);
-								//p.getInventory().addItem(loc.getBlock().getDrops(p.getInventory().getItemInMainHand()).toArray(new ItemStack[] {}));
-								//block.breakNaturally(p.getInventory().getItemInMainHand());
-								//System.out.println("Breaking block " + x + " " + y + " " + z);
-								items.addAll(loc.getBlock().getDrops(p.getInventory().getItemInMainHand()));
-								if (!loc.getBlock().getType().equals(Material.AIR))
-									blocks++;
+								if (mpl.getBreakableDefinition().test(loc.getBlock().getType()))
+								{
+									//p.getInventory().addItem(loc.getBlock().getDrops(p.getInventory().getItemInMainHand()).toArray(new ItemStack[] {}));
+									//block.breakNaturally(p.getInventory().getItemInMainHand());
+									//System.out.println("Breaking block " + x + " " + y + " " + z);
+									items.addAll(loc.getBlock().getDrops(p.getInventory().getItemInMainHand()));
+									if (!loc.getBlock().getType().equals(Material.AIR))
+										blocks++;
 
-								loc.getBlock().setType(Material.AIR);
+									loc.getBlock().setType(Material.AIR);
+								}
+								else if (!notBroken.contains(loc.getBlock().getType()))
+								{
+									notBroken.add(loc.getBlock().getType());
+								}
 							}
-							/*try
-							{
-								Thread.sleep(100);
-							} catch (InterruptedException e)
-							{
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}*/
 						}
 					}
 
@@ -94,6 +97,7 @@ public class MagicPickaxeBreakEvent implements Listener {
 								((is.getItemMeta().getLore() == null || is.getItemMeta().getLore().isEmpty()) ? "normal" : "special!") + "\n");
 					}
 
+					if (debug1) p.sendMessage("Materials not broken: " + notBroken.stream().map(mat -> mat.toString()).collect(Collectors.joining(", ")));
 
 					Location loc = block.getLocation();
 					loc.setY(mpl.getyBreak() > 0 ? block.getY() : block.getY() + mpl.getyBreak());
