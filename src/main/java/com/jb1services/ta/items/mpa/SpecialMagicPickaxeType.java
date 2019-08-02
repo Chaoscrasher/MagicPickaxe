@@ -31,4 +31,5 @@ public enum SpecialMagicPickaxeType
 	{
 		return breakingPredicate;
 	}
+	
 }

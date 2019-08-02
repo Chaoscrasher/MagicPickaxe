@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
-sourceSets.test.java.srcDirs = ['test']
+sourceSets.test.java.srcDirs = ['src/test/java']
 
 sourceSets {
     main {
@@ -19,6 +19,10 @@ jar
     }
 }
 
+test {
+    useJUnitPlatform()
+}
+
 repositories {
     mavenCentral()
     maven {
@@ -33,6 +37,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly "org.spigotmc:spigot-api:1.14.3-R0.1-SNAPSHOT"
+	testCompile group: 'org.powermock', name: 'powermock-mockito-release-full', version: '1.6.4', ext: 'pom'
+    implementation "org.spigotmc:spigot-api:1.14.3-R0.1-SNAPSHOT"
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+	testCompile 'org.powermock:powermock-api-mockito:1.6.4'
     compile project(':jbutil')
 }

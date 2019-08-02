@@ -39,7 +39,8 @@ public class TestCommand implements CommandExecutor {
 					{
 						if (sender instanceof Player)
 						{
-							((Player) sender).getInventory().addItem(makeRandomMagicPickaxe());
+							p.sendMessage(ChatColor.GREEN + "Here's your truly random magic pickaxe!");
+							((Player) sender).getInventory().addItem(SpecialMagicPickaxe.makeTrulyRandomSpecialMagicPickaxe());
 						}
 						else
 							sender.sendMessage(ChatColor.RED + "Sorry, but only players can do this!");
@@ -57,7 +58,7 @@ public class TestCommand implements CommandExecutor {
 						{
 							if (sender instanceof Player)
 							{
-								((Player) sender).getInventory().addItem(makeTestMagicPickaxe());
+								((Player) sender).getInventory().addItem(MagicPickaxe.makeTestMagicPickaxe());
 							}
 							else
 								sender.sendMessage(ChatColor.RED + "Sorry, but only players can do this!");
@@ -66,7 +67,7 @@ public class TestCommand implements CommandExecutor {
 						else if (SpecialMagicPickaxeType.valueOf(args[2]) != null)
 						{
 							SpecialMagicPickaxeType smpt = SpecialMagicPickaxeType.valueOf(args[2]);
-							p.getInventory().addItem(makeSpecialMagicPickaxeByLore(new SpecialMagicPickaxe(smpt)));
+							p.getInventory().addItem(SpecialMagicPickaxe.makeSpecialMagicPickaxeByLore(new SpecialMagicPickaxe(smpt)));
 						}
 						else
 							sender.sendMessage("Unknown subcommand for make magic-pickaxe '" + args[2] + "'!");
@@ -108,37 +109,6 @@ public class TestCommand implements CommandExecutor {
 		ItemStack is = new ItemStack(rnum == 0 ? Material.WOODEN_PICKAXE : rnum == 1 ? Material.STONE_PICKAXE : rnum == 3 ? Material.IRON_PICKAXE : Material.DIAMOND_PICKAXE);
 		ItemMeta im = is.getItemMeta();
 		im.setLore(mpl.toLore());
-		is.setItemMeta(im);
-		return is;
-	}
-
-	public static ItemStack makeSpecialMagicPickaxeByLore(SpecialMagicPickaxe smpl)
-	{
-		Random rnd = new Random();
-		int rnum = rnd.nextInt(3);
-		ItemStack is = new ItemStack(rnum == 0 ? Material.WOODEN_PICKAXE : rnum == 1 ? Material.STONE_PICKAXE : rnum == 3 ? Material.IRON_PICKAXE : Material.DIAMOND_PICKAXE);
-		ItemMeta im = is.getItemMeta();
-		im.setLore(smpl.toLore());
-		is.setItemMeta(im);
-		return is;
-	}
-
-	public static ItemStack makeRandomMagicPickaxe()
-	{
-		Random rnd = new Random();
-		int rnum = rnd.nextInt(3);
-		ItemStack is = new ItemStack(rnum == 0 ? Material.WOODEN_PICKAXE : rnum == 1 ? Material.STONE_PICKAXE : rnum == 3 ? Material.IRON_PICKAXE : Material.DIAMOND_PICKAXE);
-		ItemMeta im = is.getItemMeta();
-		im.setLore(new MagicPickaxe(100).toLore());
-		is.setItemMeta(im);
-		return is;
-	}
-
-	public static ItemStack makeTestMagicPickaxe()
-	{
-		ItemStack is = new ItemStack(Material.STONE_PICKAXE);
-		ItemMeta im = is.getItemMeta();
-		im.setLore(new MagicPickaxe(1, 2, 1).toLore());
 		is.setItemMeta(im);
 		return is;
 	}
