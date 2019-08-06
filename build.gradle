@@ -2,6 +2,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 
 sourceSets.test.java.srcDirs = ['src/test/java']
+sourceSets.main.java.srcDirs = ['src/main/java']
 
 sourceSets {
     main {

@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.jb1services.ta.items.MagicPickaxe;
+import com.jb1services.ta.items.mpa.SpecialMagicPickaxeType;
 
 public class SpecialMagicPickaxe extends MagicPickaxe
 {
